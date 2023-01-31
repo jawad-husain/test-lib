@@ -1,6 +1,12 @@
 {
-  "name": "angular-image-viewer",
+  "name": "@jawad/angular-image-viewer",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jawad-husain/angular-image-viewer.git"
+  },
+  "author": "jawad_idn <jawad@idevnerds.com>",
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^15.0.0",
     "@angular/core": "^15.0.0"

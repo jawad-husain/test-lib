@@ -1,0 +1,140 @@
+<div (dragover)="onDragOver($event)" (wheel)="scrollZoom($event)" [appScreenfull]="fullscreen"
+     [style.backgroundColor]="config.containerBackgroundColor" [style.height]="styleHeight"
+     class="img-container">
+  <div *ngIf="!config?.compareTwo">
+    <img (dragstart)="onDragStart($event)" (error)="imageNotFound(src[index])" (load)="onLoad(src[index])"
+         (loadstart)="onLoadStart(src[index])"
+         [ngStyle]="style" [src]="src[index]" alt="Image not found..."/>
+    <!-- Div below will be used to hide the 'ghost' image when dragging -->
+    <div></div>
+
+  </div>
+<!--  For Compare Two Images-->
+  <div *ngIf="config?.compareTwo" class="flex-row">
+    <div class="flex-col">
+      <img (dragstart)="onDragStart($event)" (error)="imageNotFound(src[firstIndex])" (load)="onLoad(src[firstIndex])"
+           (loadstart)="onLoadStart(src[firstIndex])"
+           [ngStyle]="style"
+           [src]="src[firstIndex]"
+           alt="Image not found..."/>
+      <!-- Div below will be used to hide the 'ghost' image when dragging -->
+      <div></div>
+    </div>
+    <div class="flex-col">
+      <img (dragstart)="onDragStart($event)" (error)="imageNotFound(src[secondIndex])" (load)="onLoad(src[secondIndex])"
+           (loadstart)="onLoadStart(src[secondIndex])"
+           [ngStyle]="style"
+           [src]="src[secondIndex]"
+           alt="Image not found..."/>
+      <!-- Div below will be used to hide the 'ghost' image when dragging -->
+      <div></div>
+    </div>
+  </div>
+  <!-- Div below will be used to hide the 'ghost' image when dragging -->
+  <div></div>
+  <div *ngIf="loading" class="spinner-container">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Button Container -->
+  <div [class]="config.btnContainerClass" class="btn-container">
+    <!-- Rotate Counter Clockwise -->
+    <ng-container *ngIf="config.btnShow.rotateCounterClockwise">
+      <button (click)="rotateCounterClockwise()" *ngIf="config.btnIcons.rotateCounterClockwise.classes"
+              [class]="config.btnClass" type="button">
+        <span [class]="config.btnIcons.rotateCounterClockwise.classes"></span>
+      </button>
+      <a (click)="rotateCounterClockwise()" *ngIf="config.btnIcons.rotateCounterClockwise.text"
+         [class]="config.btnClass">
+        <span [class]="config.btnSubClass">{{config.btnIcons.rotateCounterClockwise.text}}</span>
+      </a>
+    </ng-container>
+
+    <!-- Rotate Clockwise -->
+    <ng-container *ngIf="config.btnShow.rotateClockwise">
+      <button (click)="rotateClockwise()" *ngIf="config.btnIcons.rotateClockwise.classes"
+              [class]="config.btnClass" type="button">
+        <span [class]="config.btnIcons.rotateClockwise.classes"></span>
+      </button>
+      <a (click)="rotateClockwise()" *ngIf="config.btnIcons.rotateClockwise.text" [class]="config.btnClass">
+        <span [class]="config.btnSubClass">{{config.btnIcons.rotateClockwise.text}}</span>
+      </a>
+    </ng-container>
+
+    <!-- Zoom Out -->
+    <ng-container *ngIf="config.btnShow.zoomOut">
+      <button (click)="zoomOut()" *ngIf="config.btnIcons.zoomOut.classes"
+              [class]="config.btnClass" type="button">
+        <span [class]="config.btnIcons.zoomOut.classes"></span>
+      </button>
+      <a (click)="zoomOut()" *ngIf="config.btnIcons.zoomOut.text" [class]="config.btnClass">
+        <span [class]="config.btnSubClass">{{config.btnIcons.zoomOut.text}}</span>
+      </a>
+    </ng-container>
+
+    <!-- Zoom In -->
+    <ng-container *ngIf="config.btnShow.zoomIn">
+      <button (click)="zoomIn()" *ngIf="config.btnIcons.zoomIn.classes"
+              [class]="config.btnClass" type="button">
+        <span [class]="config.btnIcons.zoomIn.classes"></span>
+      </button>
+      <a (click)="zoomIn()" *ngIf="config.btnIcons.zoomIn.text" [class]="config.btnClass">
+        <span [class]="config.btnSubClass">{{config.btnIcons.zoomIn.text}}</span>
+      </a>
+    </ng-container>
+
+    <!-- Fullscreen -->
+    <ng-container *ngIf="config.allowFullscreen">
+      <button (click)="toggleFullscreen()" *ngIf="config.btnIcons.fullscreen.classes"
+              [class]="config.btnClass" type="button">
+        <span [class]="config.btnIcons.fullscreen.classes"></span>
+      </button>
+      <a (click)="toggleFullscreen()" *ngIf="config.btnIcons.fullscreen.text" [class]="config.btnClass">
+        <span [class]="config.btnSubClass">{{config.btnIcons.fullscreen.text}}</span>
+      </a>
+    </ng-container>
+
+    <!-- Reset -->
+    <ng-container *ngIf="config.btnShow.reset">
+      <button (click)="reset()" *ngIf="config.btnIcons.reset.classes"
+              [class]="config.btnClass" type="button">
+        <span [class]="config.btnIcons.reset.classes"></span>
+      </button>
+      <a (click)="reset()" *ngIf="config.btnIcons.reset.text" [class]="config.btnClass">
+        <span [class]="config.btnSubClass">{{config.btnIcons.reset.text}}</span>
+      </a>
+    </ng-container>
+
+    <!-- Custom Buttons -->
+    <ng-container *ngFor="let cBtn of config.customBtns">
+      <button (click)="fireCustomEvent(cBtn.name, index)" *ngIf="cBtn.icon.classes" [class]="config.btnClass"
+              type="button">
+        <span *ngIf="cBtn.icon.classes" [class]="cBtn.icon.classes"></span>
+      </button>
+      <ng-container *ngIf="cBtn.icon.text">
+        <a (click)="fireCustomEvent(cBtn.name, index)" *ngIf="cBtn.icon.text" [class]="config.btnClass">
+          <span [class]="config.btnSubClass">{{cBtn.icon.text}}</span>
+        </a>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <!-- Prev / Next Nav Container -->
+  <div *ngIf="src.length > 1" class="nav-button-container">
+    <button (click)="prevImage($event)" *ngIf="config.btnShow.next" [class]="config.btnClass" [disabled]="index === 0"
+            type="button">
+      <span *ngIf="config.btnIcons.prev.classes" [class]="config.btnIcons.prev.classes"></span>
+    </button>
+    <a (click)="prevImage($event)" *ngIf="config.btnIcons.prev.text" [class]="config.btnClass">
+      <span [class]="config.btnSubClass">{{config.btnIcons.prev.text}}</span>
+    </a>
+    <button (click)="nextImage($event)" *ngIf="config.btnShow.next" [class]="config.btnClass"
+            [disabled]="index === src.length - 1"
+            type="button">
+      <span *ngIf="config.btnIcons.next.classes" [class]="config.btnIcons.next.classes"></span>
+    </button>
+    <a (click)="nextImage($event)" *ngIf="config.btnIcons.next.text" [class]="config.btnClass">
+      <span [class]="config.btnSubClass">{{config.btnIcons.next.text}}</span>
+    </a>
+  </div>
+</div>
